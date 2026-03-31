@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <title>How to Write a Case Study</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Jost:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body { height: 100%; overflow: hidden; background: #000; }
+    html, body { height: 100%; overflow: hidden; background: #1a1a1a; }
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
-      color: #fff;
+      color: #2a2a2a;
     }
 
     /* ── SLIDE CONTAINER ── */
@@ -35,23 +35,26 @@
     }
 
     /* ── BACKGROUNDS ── */
-    .bg-black { background: #111; }
-    .bg-white { background: #fff; color: #111; }
-    .bg-gray { background: #1a1a1a; }
-    .bg-light { background: #f5f5f5; color: #111; }
+    .bg-black { background: #1a1a1a; color: #fff; }
+    .bg-white { background: #CEC9C3; color: #2a2a2a; }
+    .bg-gray { background: #242424; color: #fff; }
+    .bg-light { background: #D5D0CB; color: #2a2a2a; }
 
     /* ── TYPOGRAPHY ── */
     .slide h1 {
+      font-family: 'Jost', sans-serif;
       font-size: 72px; font-weight: 900;
       line-height: 1.0; letter-spacing: -3px;
       max-width: 900px;
     }
     .slide h2 {
+      font-family: 'Jost', sans-serif;
       font-size: 52px; font-weight: 800;
       line-height: 1.1; letter-spacing: -2px;
       max-width: 850px;
     }
     .slide h3 {
+      font-family: 'Jost', sans-serif;
       font-size: 36px; font-weight: 700;
       line-height: 1.2; letter-spacing: -1px;
       max-width: 800px;
@@ -67,12 +70,13 @@
       margin-bottom: 20px; opacity: 0.5;
     }
     .slide .big-num {
+      font-family: 'Jost', sans-serif;
       font-size: 140px; font-weight: 900;
       letter-spacing: -6px; line-height: 1;
-      margin-bottom: 16px;
+      margin-bottom: 16px; color: #FF3D00;
     }
     .slide .accent { color: #888; }
-    .bg-white .accent, .bg-light .accent { color: #999; }
+    .bg-white .accent, .bg-light .accent { color: #7a7672; }
 
     /* ── LISTS ── */
     .slide ul, .slide ol {
@@ -87,7 +91,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     .bg-white li, .bg-light li {
-      border-bottom-color: rgba(0,0,0,0.08);
+      border-bottom-color: rgba(42,42,42,0.1);
     }
     .slide li strong {
       font-weight: 700;
@@ -212,7 +216,7 @@
     /* ── PROGRESS BAR ── */
     .progress {
       position: fixed; bottom: 0; left: 0;
-      height: 3px; background: #fff;
+      height: 3px; background: #FF3D00;
       transition: width 0.4s ease;
       z-index: 100;
     }
@@ -843,74 +847,7 @@
     </div>
   </div>
 
-  <!-- SLIDE 15: GRADING -->
-  <div class="slide bg-white" data-idx="14">
-    <div class="subtitle">Grading</div>
-    <h3>30 Points Total</h3>
-    <div class="grade-table">
-      <div class="grade-row header">
-        <div>Phase</div>
-        <div class="grade-pts">Pts</div>
-        <div>Looking For</div>
-      </div>
-      <div class="grade-row">
-        <div><strong>Defining the Problem</strong></div>
-        <div class="grade-pts">5</div>
-        <div class="grade-desc">Clear project, audience, and stakes within seconds</div>
-      </div>
-      <div class="grade-row">
-        <div><strong>Understanding the Audience</strong></div>
-        <div class="grade-pts">5</div>
-        <div class="grade-desc">Personas, empathy map, journey map connected to decisions</div>
-      </div>
-      <div class="grade-row">
-        <div><strong>Sketches & Wireframes</strong></div>
-        <div class="grade-pts">8</div>
-        <div class="grade-desc">Sitemap, sketches, iteration with reasoning at each step</div>
-      </div>
-      <div class="grade-row">
-        <div><strong>Final Design & Prototypes</strong></div>
-        <div class="grade-pts">7</div>
-        <div class="grade-desc">Prototype links, responsive mockups, features explained</div>
-      </div>
-      <div class="grade-row">
-        <div><strong>Hypothetical Results</strong></div>
-        <div class="grade-pts">5</div>
-        <div class="grade-desc">Before/after, impact tied to research, honest reflection</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 16: DELIVERABLE -->
-  <div class="slide bg-gray" data-idx="15">
-    <div class="subtitle">Deliverable</div>
-    <h2>One Figma page, top to bottom</h2>
-    <div class="two-col" style="margin-top:20px;">
-      <div>
-        <h3>Format</h3>
-        <ul>
-          <li>Desktop-width frame, scrollable case study</li>
-          <li>All visuals embedded — mockups, wireframes, sitemaps, personas, before/afters</li>
-          <li>Use your portfolio branding if you have one</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Submit</h3>
-        <ul>
-          <li>Figma link with view access enabled</li>
-          <li>Link to your original prototype</li>
-        </ul>
-        <h3 style="margin-top:16px;">Remember</h3>
-        <ul>
-          <li>Don't redesign your original project — document and present what you did</li>
-          <li>Small cleanup is fine, but the project stays the project</li>
-          <li>This should look like a real portfolio page, not a homework submission</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- SLIDE 17: CLOSING -->
+  <!-- SLIDE 15: CLOSING -->
   <div class="slide bg-black" data-idx="16">
     <div class="split">
       <div class="split-text">
@@ -947,9 +884,9 @@
 
     // Update progress bar color
     const bg = slides[current].classList.contains('bg-white') || slides[current].classList.contains('bg-light');
-    document.getElementById('progress').style.background = bg ? '#111' : '#fff';
-    document.getElementById('counter').style.color = bg ? '#111' : '#fff';
-    document.querySelector('.deck-label').style.color = bg ? '#111' : '#fff';
+    document.getElementById('progress').style.background = '#FF3D00';
+    document.getElementById('counter').style.color = bg ? '#2a2a2a' : '#fff';
+    document.querySelector('.deck-label').style.color = bg ? '#2a2a2a' : '#fff';
 
     // Persist slide in URL
     const url = new URL(window.location);
