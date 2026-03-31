@@ -81,6 +81,25 @@
     }
     .slide .accent { color: #888; }
     .bg-white .accent, .bg-light .accent { color: #7a7672; }
+    .bg-red .accent { color: rgba(255,255,255,0.7); }
+
+    /* ── NAV ARROWS ── */
+    .nav-arrow {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      z-index: 200; width: 48px; height: 48px;
+      border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.3); color: #fff;
+      font-size: 22px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.2s ease, background 0.15s ease;
+      opacity: 0.4; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      font-family: inherit; line-height: 1; padding: 0;
+    }
+    .nav-arrow:hover { opacity: 1; background: rgba(0,0,0,0.5); }
+    .nav-arrow.light { border-color: rgba(0,0,0,0.15); background: rgba(255,255,255,0.5); color: #111; }
+    .nav-arrow.light:hover { background: rgba(255,255,255,0.8); }
+    .nav-prev { left: 20px; }
+    .nav-next { right: 20px; }
 
     /* ── LISTS ── */
     .slide ul, .slide ol {
@@ -790,6 +809,10 @@
 
 </div>
 
+<!-- NAV ARROWS -->
+<button class="nav-arrow nav-prev" id="nav-prev">&#8592;</button>
+<button class="nav-arrow nav-next" id="nav-next">&#8594;</button>
+
 <!-- PROGRESS -->
 <div class="progress" id="progress"></div>
 <div class="counter" id="counter"></div>
@@ -833,11 +856,33 @@
     }
   });
 
-  // Click to advance
+  // Nav arrow clicks
+  document.getElementById('nav-prev').addEventListener('click', (e) => {
+    e.stopPropagation();
+    show(current - 1);
+  });
+  document.getElementById('nav-next').addEventListener('click', (e) => {
+    e.stopPropagation();
+    show(current + 1);
+  });
+
+  // Click to advance (ignore nav arrows and links)
   document.addEventListener('click', (e) => {
+    if (e.target.closest('.nav-arrow') || e.target.closest('a')) return;
     if (e.clientX > window.innerWidth / 2) show(current + 1);
     else show(current - 1);
   });
+
+  // Toggle light/dark nav arrows based on slide background
+  function updateArrows() {
+    const isLight = slides[current].classList.contains('bg-white') || slides[current].classList.contains('bg-light');
+    document.getElementById('nav-prev').classList.toggle('light', isLight);
+    document.getElementById('nav-next').classList.toggle('light', isLight);
+  }
+
+  // Patch show() to update arrows
+  const _origShow = show;
+  show = function(idx) { _origShow(idx); updateArrows(); };
 
   // Start on slide from ?slide= param, or slide 1
   const startSlide = parseInt(new URLSearchParams(window.location.search).get('slide')) || 1;
