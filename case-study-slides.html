@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>How to Write a Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; overflow: hidden; background: #000; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: #fff;
+    }
+
+    /* ── SLIDE CONTAINER ── */
+    .deck { position: relative; width: 100vw; height: 100vh; }
+
+    .slide {
+      position: absolute; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 80px 120px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── BACKGROUNDS ── */
+    .bg-black { background: #111; }
+    .bg-white { background: #fff; color: #111; }
+    .bg-gray { background: #1a1a1a; }
+    .bg-light { background: #f5f5f5; color: #111; }
+
+    /* ── TYPOGRAPHY ── */
+    .slide h1 {
+      font-size: 72px; font-weight: 900;
+      line-height: 1.0; letter-spacing: -3px;
+      max-width: 900px;
+    }
+    .slide h2 {
+      font-size: 52px; font-weight: 800;
+      line-height: 1.1; letter-spacing: -2px;
+      max-width: 850px;
+    }
+    .slide h3 {
+      font-size: 36px; font-weight: 700;
+      line-height: 1.2; letter-spacing: -1px;
+      max-width: 800px;
+    }
+    .slide p {
+      font-size: 22px; line-height: 1.6;
+      max-width: 720px; margin-top: 20px;
+      font-weight: 400;
+    }
+    .slide .subtitle {
+      font-size: 16px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 3px;
+      margin-bottom: 20px; opacity: 0.5;
+    }
+    .slide .big-num {
+      font-size: 140px; font-weight: 900;
+      letter-spacing: -6px; line-height: 1;
+      margin-bottom: 16px;
+    }
+    .slide .accent { color: #888; }
+    .bg-white .accent, .bg-light .accent { color: #999; }
+
+    /* ── LISTS ── */
+    .slide ul, .slide ol {
+      margin-top: 24px;
+      padding-left: 0;
+      list-style: none;
+      max-width: 800px;
+    }
+    .slide li {
+      font-size: 24px; line-height: 1.5;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .bg-white li, .bg-light li {
+      border-bottom-color: rgba(0,0,0,0.08);
+    }
+    .slide li strong {
+      font-weight: 700;
+    }
+
+    /* ── SPLIT LAYOUT (text + image) ── */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      width: 100%; height: 100%;
+    }
+    .split-text { display: flex; flex-direction: column; justify-content: center; }
+    .split-text h3 { font-size: 28px; }
+    .split-text p { font-size: 18px; }
+    .split-img { height: 100%; display: flex; flex-direction: column; justify-content: center; }
+    .split-img img {
+      width: 100%; max-height: 65vh;
+      object-fit: cover; display: block;
+    }
+    .split-img .img-cite { margin-top: 8px; }
+
+    /* ── SLIDE IMAGE ── */
+    .slide-img {
+      margin-top: 32px;
+      max-width: 100%;
+    }
+    .slide-img img {
+      width: 100%; max-height: 340px;
+      object-fit: cover; display: block;
+    }
+    .slide-img-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .slide-img-row img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover; display: block;
+    }
+
+    /* ── TWO COL ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      margin-top: 32px;
+      width: 100%;
+    }
+    .two-col p { font-size: 18px; margin-top: 0; }
+    .two-col h3 { font-size: 24px; margin-bottom: 12px; }
+    .two-col li { font-size: 18px; line-height: 1.5; padding: 6px 0; }
+    .two-col ul { margin-top: 8px; }
+
+    /* ── COMPARISON TABLE ── */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-top: 32px;
+      width: 100%;
+      max-width: 900px;
+    }
+    .compare-col { padding: 32px; }
+    .compare-col:first-child { border-right: 1px solid rgba(255,255,255,0.1); }
+    .bg-white .compare-col:first-child,
+    .bg-light .compare-col:first-child { border-right-color: rgba(0,0,0,0.1); }
+    .compare-head {
+      font-size: 14px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px;
+      margin-bottom: 20px; opacity: 0.5;
+    }
+    .compare-col li {
+      font-size: 18px; border: none; padding: 6px 0;
+    }
+
+    /* ── PHASE CARD ── */
+    .phase-num {
+      font-size: 14px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 3px;
+      opacity: 0.4; margin-bottom: 16px;
+    }
+
+    /* ── QUOTE ── */
+    .quote {
+      font-size: 32px; font-weight: 600;
+      line-height: 1.4; letter-spacing: -0.5px;
+      max-width: 750px;
+      font-style: italic;
+    }
+    .quote-attr {
+      font-size: 16px; margin-top: 20px;
+      opacity: 0.5; font-style: normal;
+    }
+
+    /* ── GRADING TABLE ── */
+    .grade-table {
+      margin-top: 32px;
+      width: 100%;
+      max-width: 900px;
+    }
+    .grade-row {
+      display: grid;
+      grid-template-columns: 2fr 60px 3fr;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      font-size: 18px;
+      align-items: baseline;
+    }
+    .grade-row.header {
+      font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      opacity: 0.4; border-bottom-color: rgba(0,0,0,0.15);
+    }
+    .grade-pts { font-weight: 800; text-align: center; }
+    .grade-desc { opacity: 0.7; font-size: 16px; }
+
+    /* ── PROGRESS BAR ── */
+    .progress {
+      position: fixed; bottom: 0; left: 0;
+      height: 3px; background: #fff;
+      transition: width 0.4s ease;
+      z-index: 100;
+    }
+    .bg-white .progress, .bg-light .progress { background: #111; }
+
+    /* ── SLIDE COUNTER ── */
+    .counter {
+      position: fixed; bottom: 16px; right: 40px;
+      font-size: 13px; font-weight: 600;
+      opacity: 0.3; z-index: 100;
+    }
+
+    /* ── FOOTER LABEL ── */
+    .deck-label {
+      position: fixed; bottom: 16px; left: 40px;
+      font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 2px;
+      opacity: 0.2; z-index: 100;
+    }
+
+    /* ── SLIDE CITE ── */
+    .slide-cite {
+      position: absolute;
+      bottom: 56px; left: 120px; right: 120px;
+      font-size: 11px; font-weight: 500;
+      opacity: 0.35;
+      display: flex; justify-content: space-between;
+      gap: 24px;
+    }
+    .slide-cite a {
+      color: inherit; text-decoration: none;
+      white-space: nowrap;
+    }
+    .slide-cite a:hover { text-decoration: underline; }
+
+    /* ── IMAGE CAPTION ── */
+    .img-cite {
+      font-size: 10px; font-weight: 500;
+      opacity: 0.4; margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide bg-black active" data-idx="0">
+    <div class="split">
+      <div class="split-text">
+        <div class="subtitle">Portfolio Design</div>
+        <h1>How to Write a Case Study</h1>
+        <p class="accent">Turning your finished project into a portfolio-ready case study that shows how you think — not just what you made.</p>
+      </div>
+      <div class="split-img">
+        <img src="images/portfolio-example.jpg" alt="Portfolio Example">
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: WHY -->
+  <div class="slide bg-gray" data-idx="1">
+    <h2>Process is the proof</h2>
+    <h3>Anyone can show a polished screen. Your case study needs to show how you got there.</h3>
+    <div class="two-col" style="margin-top:28px;">
+      <div>
+        <p>A case study exists to prove you understand <strong>how</strong> to do the work — not just that you can produce attractive final screens.</p>
+        <p style="margin-top:12px;">Since you don't yet have years of professional experience, you need to <strong>show and prove</strong> you can do the work — through your process, not just your images.</p>
+      </div>
+      <div>
+        <p>Good mockups without process documentation are <strong>decoration</strong>.</p>
+        <p style="margin-top:12px;">Process documentation without good mockups is <strong>still a case study</strong>.</p>
+        <p style="margin-top:12px;">The strongest case studies have both — but if you have to choose, <strong>process wins every time.</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2B: NN/G RESEARCH -->
+  <div class="slide bg-white" data-idx="2">
+    <div class="subtitle">What hiring managers actually want</div>
+    <h2>NN/g surveyed 204 UX hiring professionals</h2>
+    <ul>
+      <li><strong>Process over polish</strong> — Show the messy work, not just the finished product</li>
+      <li><strong>Design rationale</strong> — Explain what you excluded and why</li>
+      <li><strong>Constraints & iterations</strong> — How research informed decisions and how concepts evolved</li>
+      <li><strong>Collaboration</strong> — Clear communication of your role vs. the team</li>
+      <li><strong>Scanability</strong> — Hiring managers won't read word-for-word</li>
+    </ul>
+    <div class="slide-cite">
+      <span>Source: Nielsen Norman Group, "How to Create a UX Design Portfolio" (nngroup.com)</span>
+      <a href="https://www.nngroup.com/articles/ux-design-portfolios/">nngroup.com/articles/ux-design-portfolios</a>
+    </div>
+  </div>
+
+  <!-- SLIDE 2C: NN/G ESSENTIALS -->
+  <div class="slide bg-light" data-idx="3">
+    <div class="subtitle">According to NN/g</div>
+    <h3>Every case study should include</h3>
+    <div class="two-col">
+      <div>
+        <ul>
+          <li><strong>Problem statement</strong> or hypothesis</li>
+          <li><strong>Your specific role</strong> and collaborations</li>
+          <li><strong>Solution development</strong> process</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><strong>Results and impact</strong> — user and business metrics</li>
+          <li><strong>Challenges faced</strong> and rejected concepts</li>
+          <li><strong>Key learnings</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-cite">
+      <span>Source: Nielsen Norman Group, "How to Create a UX Design Portfolio" (nngroup.com)</span>
+      <a href="https://www.nngroup.com/articles/ux-design-portfolios/">nngroup.com/articles/ux-design-portfolios</a>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: WHAT IS A CASE STUDY -->
+  <div class="slide bg-white" data-idx="4">
+    <div class="split">
+      <div class="split-text">
+        <div class="subtitle">The Basics</div>
+        <h2>What is a case study?</h2>
+        <p>A case study walks someone through a project from start to finish — the problem, the research, the decisions, the process, and the result. It is the standard format for presenting design work in a portfolio.</p>
+      </div>
+      <div class="split-img">
+        <img src="images/slide-portfolio.jpg" alt="Portfolio Example">
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: SCANABILITY — 10 SECONDS -->
+  <div class="slide bg-gray">
+    <div class="split">
+      <div class="split-text">
+        <div class="big-num" style="font-size:120px;">10 sec</div>
+        <h3>That's how long a recruiter spends scanning your work</h3>
+        <p class="accent">Most people won't read long-form content. That doesn't mean less content — it means more concise content.</p>
+      </div>
+      <div class="split-img">
+        <img src="images/slide-scannable.jpg" alt="Scannable Layout">
+        <div class="img-cite">Image: Replace with example of scannable case study layout</div>
+      </div>
+    </div>
+    <div class="slide-cite">
+      <span>Source: Tobias van Schneider, "How to write case studies for your portfolio" (semplice.com)</span>
+      <a href="https://www.semplice.com/how-to-write-case-studies-for-your-portfolio">semplice.com</a>
+    </div>
+  </div>
+
+  <!-- SLIDE: SCANABILITY — HOW -->
+  <div class="slide bg-white">
+    <div class="subtitle">Key Principle</div>
+    <h2>Make your portfolio page scannable</h2>
+    <p style="max-width:800px;">Most people won't read long-form content — but that doesn't mean less content. It means more <strong>concise</strong> content designed to be scanned.</p>
+    <div class="two-col" style="margin-top:28px;">
+      <div>
+        <ul>
+          <li><strong>Headlines</strong> — Tell the story on their own</li>
+          <li><strong>Bullets</strong> — Short points, not dense paragraphs</li>
+          <li><strong>Labels</strong> — Phase numbers, tags, metadata</li>
+          <li><strong>Images</strong> — Capture attention, break up text</li>
+          <li><strong>Captions</strong> — 1–2 sentences under every image</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><strong>Shorter lines</strong> — Use columns to make long paragraphs feel shorter</li>
+          <li><strong>Bold key info</strong> — Highlight the most important words so scanners catch them</li>
+          <li><strong>Front-load paragraphs</strong> — Put the important info at the start and end, not buried in the middle</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-cite">
+      <span>If someone only reads your headlines and captions, they should still understand the project</span>
+      <span>Source: semplice.com, nngroup.com</span>
+    </div>
+  </div>
+
+  <!-- SLIDE: SEMPLICE — 7 RULES -->
+  <div class="slide bg-white">
+    <div class="subtitle">Semplice's 7 Rules</div>
+    <h3>Writing case studies that work</h3>
+    <div class="two-col">
+      <div>
+        <ul>
+          <li><strong>Content first, design second</strong> — Write during or right after the project, not at launch</li>
+          <li><strong>Keep it brief</strong> — Target a 3-minute read. No novels.</li>
+          <li><strong>Make it scannable</strong> — Headlines + captions should carry the story alone</li>
+          <li><strong>Write in your own voice</strong> — No buzzwords. Talk like a human.</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><strong>Be clear about your role</strong> — State exactly what you did on the project so there's no guessing</li>
+          <li><strong>Caption your images</strong> — A short label or description helps the reader understand what they're looking at</li>
+          <li><strong>Create visual rhythm</strong> — Alternate between text, images, and whitespace so the page doesn't feel like a wall</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-cite">
+      <span>Source: Tobias van Schneider, "How to write case studies for your portfolio" (semplice.com)</span>
+      <a href="https://www.semplice.com/how-to-write-case-studies-for-your-portfolio">semplice.com</a>
+    </div>
+  </div>
+
+  <!-- SLIDE: SEMPLICE — COMMON MISTAKES -->
+  <div class="slide bg-light">
+    <h3>Common mistakes to avoid</h3>
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-head">Don't</div>
+        <ul>
+          <li>Dump images without any text</li>
+          <li>Write a novel nobody will read</li>
+          <li>Use jargon and buzzwords</li>
+          <li>Skip explaining your role</li>
+          <li>Use the same rigid template for every project</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head">Do</div>
+        <ul>
+          <li>Caption every image with context</li>
+          <li>Target a 3-minute read time</li>
+          <li>Write like you're explaining to a client</li>
+          <li>Be generous crediting your team</li>
+          <li>Design each case study around its unique story</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-cite">
+      <span>Source: Tobias van Schneider, "How to write case studies for your portfolio" (semplice.com)</span>
+      <a href="https://www.semplice.com/how-to-write-case-studies-for-your-portfolio">semplice.com</a>
+    </div>
+  </div>
+
+  <!-- SLIDE: VAN SCHNEIDER — VISUALS -->
+  <div class="slide bg-black">
+    <div class="split">
+      <div class="split-text">
+        <h2>Your images do the heavy lifting</h2>
+        <h3>Most people will scan your case study, not read it</h3>
+        <p class="accent">If your visuals don't grab attention, the rest of your writing won't matter. Make every image intentional — mockups, wireframes, diagrams, before/afters.</p>
+      </div>
+      <div class="split-img">
+        <img src="images/slide-visual.jpg" alt="Visual Quality">
+        <div class="img-cite">Image: Example of high-quality case study visuals</div>
+      </div>
+    </div>
+    <div class="slide-cite">
+      <span>Source: Tobias van Schneider, "A visual guide to writing portfolio case studies" (Medium)</span>
+      <a href="https://vanschneider.medium.com/a-visual-guide-to-writing-portfolio-case-studies-ad5dbc513f37">vanschneider.medium.com</a>
+    </div>
+  </div>
+
+  <!-- SLIDE: VAN SCHNEIDER — PERSONALITY -->
+  <div class="slide bg-gray">
+    <div class="quote">"We should finish reading with a sense of your personality and design process."</div>
+    <div class="quote-attr">— Tobias van Schneider</div>
+    <div class="two-col" style="margin-top:32px;">
+      <div>
+        <h3>Write like a human</h3>
+        <p>Explain the project like you're talking to a curious client across the table. No buzzwords. No "leveraging synergies." If you wouldn't say it out loud, don't write it.</p>
+      </div>
+      <div>
+        <h3>The test</h3>
+        <p>Read your case study out loud. If it sounds like a textbook, rewrite it. If it sounds like you explaining your project to a friend who's genuinely interested — you're on the right track.</p>
+      </div>
+    </div>
+    <div class="slide-cite">
+      <span>Source: Tobias van Schneider, DESK Magazine / semplice.com</span>
+      <a href="https://vanschneider.com/blog/portfolio-tips/write-project-case-studies-portfolio/">vanschneider.com</a>
+    </div>
+  </div>
+
+  <!-- SLIDE: 3 EXAMPLES TO STUDY -->
+  <div class="slide bg-white">
+    <div class="subtitle">Before you start — study these</div>
+    <h2>3 Case Studies Worth Reading</h2>
+    <div class="two-col" style="margin-top:20px;">
+      <div>
+        <h3>Sealadder — Gloria Lo</h3>
+        <p>13 participants in focus groups. Every decision ties back to research. Admits she over-focused on visual polish early. The case study reads like a story.</p>
+        <h3 style="margin-top:20px;">Lido Learning — Sofie Vickers</h3>
+        <p>Two distinct audiences researched separately. Competitive analysis across 6 platforms. Before/after navigation changes with reasoning for each.</p>
+      </div>
+      <div>
+        <h3>BeMIX — Lynette May</h3>
+        <p>Opens with "70% of users abandoned the website upon arrival." Reports 100% failure rate on certain tasks. Honestly notes user testing was still pending.</p>
+        <h3 style="margin-top:20px;">What they all do</h3>
+        <p>Lead with the problem. Ground decisions in research. Show the full process. End with honest reflection. By the time you see the final screens, you understand the thinking behind every decision.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: NARRATIVE ARC -->
+  <div class="slide bg-gray">
+    <div class="subtitle">Think like a storyteller</div>
+    <h2>Your case study is a narrative, not a checklist</h2>
+    <p class="accent" style="max-width:800px;">Each section should lead into the next. Someone reading top to bottom should follow the thread from "here is the problem" all the way to "here is what I'd do next."</p>
+    <div class="two-col" style="margin-top:28px;">
+      <div>
+        <h3>The arc</h3>
+        <ul>
+          <li><strong>Setup</strong> — Here's the problem and who has it</li>
+          <li><strong>Investigation</strong> — Here's what I learned about it</li>
+          <li><strong>Development</strong> — Here's how I structured and built the solution</li>
+          <li><strong>Resolution</strong> — Here's what it looks like and what it does</li>
+          <li><strong>Reflection</strong> — Here's what I'd do differently</li>
+        </ul>
+      </div>
+      <div>
+        <h3>The thread</h3>
+        <p>A user said they gave up after checking 3 apps. That insight appears in your persona. It shapes your sitemap. It drives your key feature. It shows up in your impact statement. <strong>One thread, start to finish.</strong></p>
+        <p style="margin-top:12px;">If your final design can't be traced back to something in your research, the case study isn't doing its job.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: PRETTY SCREENS VS PROCESS -->
+  <div class="slide bg-light">
+    <h3>Pretty screens vs. Process</h3>
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-head">Pretty Screens Prove</div>
+        <ul>
+          <li>You can use Figma</li>
+          <li>You have visual taste</li>
+          <li>You can follow a tutorial</li>
+          <li>You can pick nice colors</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head">Process Proves</div>
+        <ul>
+          <li>You can think through a problem</li>
+          <li>You can conduct real research</li>
+          <li>You make evidence-based decisions</li>
+          <li>You can create something original</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: THE ASSIGNMENT -->
+  <div class="slide bg-black" data-idx="4">
+    <div class="split">
+      <div class="split-text">
+        <div class="subtitle">Your Task</div>
+        <h2>Tell the story of the work you already did</h2>
+        <p>You are not redesigning your project. You are not starting something new. You are packaging your finished work into a narrative that shows what you solved, how you approached it, and why your decisions made sense.</p>
+        <ul style="margin-top:20px;">
+          <li><strong>What problem</strong> you solved</li>
+          <li><strong>How</strong> you approached it</li>
+          <li><strong>What</strong> you designed</li>
+          <li><strong>Why</strong> your decisions made sense</li>
+        </ul>
+        <p class="accent" style="margin-top:16px;">The raw material is done. Now you need to frame it as a story someone outside your class can follow.</p>
+      </div>
+      <div class="split-img">
+        <img src="images/slide-project.jpg" alt="Your Work">
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: 5 PHASES OVERVIEW -->
+  <div class="slide bg-gray" data-idx="5">
+    <div class="subtitle">Structure</div>
+    <h2>5 Phases</h2>
+    <div class="two-col" style="margin-top:20px;">
+      <div>
+        <ul>
+          <li><strong>01 — Defining the Problem</strong><br><span class="accent">What you're solving and why it matters</span></li>
+          <li><strong>02 — Understanding the Audience</strong><br><span class="accent">Who you're designing for and what you learned</span></li>
+          <li><strong>03 — Sketches & Wireframes</strong><br><span class="accent">How the design evolved from rough to refined</span></li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><strong>04 — Final Design & Prototypes</strong><br><span class="accent">The polished result across breakpoints</span></li>
+          <li><strong>05 — Hypothetical Results</strong><br><span class="accent">Critique, impact, and honest reflection</span></li>
+        </ul>
+        <p style="margin-top:24px;">Each phase should lead into the next — someone reading top to bottom should follow the thread from problem to result without gaps.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: PHASE 1 -->
+  <div class="slide bg-white" data-idx="6">
+    <div class="phase-num">Phase 01</div>
+    <h2>Defining the Problem</h2>
+    <div class="two-col">
+      <div>
+        <h3>Include</h3>
+        <p>Hero section with project name, role, timeline. The problem statement. Your "How Might We" design challenge. Supporting images — research photos, competitive analysis, data.</p>
+      </div>
+      <div>
+        <h3>Avoid</h3>
+        <p>"In today's world, technology is important." Get to the specific problem. Who has it, what does it cost them, and what are you trying to solve?</p>
+      </div>
+    </div>
+    <div class="slide-img-row" style="grid-template-columns: 1fr 1fr;">
+      <img src="images/research-example.jpg" alt="Research">
+      <img src="images/moodboard-example.jpg" alt="Mood Board">
+    </div>
+    <div class="img-cite">Images: Replace with your hero section, research documentation, and design challenge from your case study template</div>
+  </div>
+
+  <!-- SLIDE: PHASE 1 — CONCRETE EXAMPLES -->
+  <div class="slide bg-light">
+    <div class="phase-num">Phase 01 — Examples</div>
+    <h3>Opening your case study</h3>
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-head">Weak</div>
+        <ul>
+          <li>"In today's world, public transit is important for many people in cities."</li>
+          <li>"I wanted to make a website that helps users."</li>
+          <li>"This project was about redesigning an app."</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head">Strong</div>
+        <ul>
+          <li>"Kansas City riders check 5 separate apps to compare a single bus route. 3 out of 4 give up and just drive."</li>
+          <li>"How might I help KC riders compare transit options without switching between 5 different apps?"</li>
+          <li>"70% of users abandoned the website upon arrival." — Lynette May, BeMIX</li>
+        </ul>
+      </div>
+    </div>
+    <p class="accent" style="margin-top:16px;">Lead with the specific problem and who has it. A number or a user quote in the first sentence immediately tells the reader why this matters.</p>
+  </div>
+
+  <!-- SLIDE 8: PHASE 2 -->
+  <div class="slide bg-light" data-idx="7">
+    <div class="phase-num">Phase 02</div>
+    <h2>Understanding the Audience</h2>
+    <div class="two-col">
+      <div>
+        <h3>Three parts</h3>
+        <p>Persona cards with goals and frustrations. Empathy map highlights — says, thinks, feels, does, pain points, gains. Journey map with scenario, stages, and opportunities.</p>
+      </div>
+      <div>
+        <h3>Make it real</h3>
+        <p>Use your users' words. "I gave up after checking three different apps" does more work than you summarizing that users found it frustrating. Every decision later should trace back here.</p>
+      </div>
+    </div>
+    <div class="slide-img-row" style="grid-template-columns: 1fr 1fr 1fr;">
+      <img src="images/persona-example.jpg" alt="Personas">
+      <img src="images/empathy-map-example.png" alt="Empathy Map">
+      <img src="images/journey-map-example.jpg" alt="Journey Map">
+    </div>
+    <div class="img-cite">Images: Replace with screenshots of your persona cards, empathy map, and journey map</div>
+  </div>
+
+  <!-- SLIDE 9: PHASE 3 -->
+  <div class="slide bg-white" data-idx="8">
+    <div class="phase-num">Phase 03</div>
+    <h2>Sketches & Wireframes</h2>
+    <div class="two-col">
+      <div>
+        <h3>Show the messy middle</h3>
+        <p>Sitemap explaining how the product is structured. Sketches and wireframes — rough concepts, layout experiments, early explorations. Show what changed and why.</p>
+      </div>
+      <div>
+        <h3>Why this matters most</h3>
+        <p>This phase carries the most weight. Anyone can show a finished screen. Showing the wrong turns and iterations is what proves you went through a real design process.</p>
+      </div>
+    </div>
+    <div class="slide-img-row">
+      <img src="images/sitemap-example.jpg" alt="Sitemap">
+      <img src="images/sketches-example.jpg" alt="Sketches">
+      <img src="images/wireframe-example.jpg" alt="Wireframes">
+    </div>
+    <div class="img-cite">Images: Replace with your sitemap, early sketches, and wireframe iterations</div>
+  </div>
+
+  <!-- SLIDE: PHASE 3 — SHOWING ITERATION -->
+  <div class="slide bg-light">
+    <div class="phase-num">Phase 03 — Showing Iteration</div>
+    <h3>What real iteration looks like</h3>
+    <div class="two-col">
+      <div>
+        <h3>Not iteration</h3>
+        <p>"Here are my wireframes." (Three polished frames with no explanation)</p>
+        <p style="margin-top:12px;">This just shows what you made. It doesn't show any thinking. There's no story of how you got here or what changed along the way.</p>
+      </div>
+      <div>
+        <h3>Real iteration</h3>
+        <p>"My first wireframe put the comparison tool on a separate page. After testing the flow, I realized users needed it on the same screen as search results — switching pages broke their train of thought."</p>
+        <p style="margin-top:12px;">Now I can see a decision, a reason, and an evolution. That's the proof of work.</p>
+      </div>
+    </div>
+    <p class="accent" style="margin-top:20px;">If your early wireframes look different from your final design, that's a good thing — show the change and explain why it happened.</p>
+  </div>
+
+  <!-- SLIDE 10: PHASE 4 -->
+  <div class="slide bg-light" data-idx="9">
+    <div class="phase-num">Phase 04</div>
+    <h2>Final Design & Prototypes</h2>
+    <div class="two-col">
+      <div>
+        <h3>Show the result</h3>
+        <p>Prototype links for desktop, tablet, and mobile. Polished mockups across breakpoints. Pick screens that best demonstrate your decisions — you don't need every frame.</p>
+      </div>
+      <div>
+        <h3>Explain the interaction</h3>
+        <p>Walk through interactive features — filters, forms, comparison tools. What can users actually do? What makes this a tool and not just a static page?</p>
+      </div>
+    </div>
+    <div class="slide-img-row" style="grid-template-columns: 1fr 1fr 1fr;">
+      <img src="images/final-design-1.jpg" alt="Desktop Mockup">
+      <img src="images/final-design-2.jpg" alt="Tablet Mockup">
+      <img src="images/final-design-3.jpg" alt="Mobile Mockup">
+    </div>
+    <div class="img-cite">Images: Replace with your responsive mockups — desktop (1200px+), tablet (768px), mobile (360px)</div>
+  </div>
+
+  <!-- SLIDE 11: PHASE 5 -->
+  <div class="slide bg-white" data-idx="10">
+    <div class="phase-num">Phase 05</div>
+    <h2>Hypothetical Results</h2>
+    <div class="two-col">
+      <div>
+        <h3>Critique & impact</h3>
+        <p>Before/after comparisons from group critique. State the feedback, show the change, explain why it improved. Projected impact tied to research findings.</p>
+      </div>
+      <div>
+        <h3>Honest reflection</h3>
+        <p>What worked, what was hard, what you'd change. Don't say "I learned a lot." Say what you actually learned — a specific mistake, a process insight, a clear next step.</p>
+      </div>
+    </div>
+    <div class="slide-img-row" style="grid-template-columns: 1fr 1fr 1fr;">
+      <img src="images/results-before.jpg" alt="Before">
+      <img src="images/results-after.jpg" alt="After">
+      <img src="images/results-reflection.jpg" alt="Reflection">
+    </div>
+    <div class="img-cite">Images: Replace with your before/after critique screenshots and reflection notes</div>
+  </div>
+
+  <!-- SLIDE 12: PHASE 5 — WHAT TO INCLUDE -->
+  <div class="slide bg-light" data-idx="11">
+    <div class="phase-num">Phase 05 — continued</div>
+    <h2>What to Include in Results</h2>
+    <div class="two-col">
+      <div>
+        <h3>The problem & hypothesis</h3>
+        <p><em>"Users weren't receiving alerts about new sales. Based on reviews, we hypothesized users didn't know they could adjust notification settings."</em></p>
+        <h3 style="margin-top:16px;">Your role & collaboration</h3>
+        <p><em>"I was the sole UX designer on an Agile team of 3 devs, a product owner, a scrum master, and a QA engineer."</em></p>
+        <h3 style="margin-top:16px;">How you reached your solution</h3>
+        <p><em>"Usability testing showed users didn't realize they could adjust notification settings. We redesigned them to be more prominent in the navigation."</em></p>
+      </div>
+      <div>
+        <h3>How the solution solved the problem</h3>
+        <p><em>"Additional usability testing showed increased findability. Users could now adjust settings and access sales alerts."</em></p>
+        <h3 style="margin-top:16px;">Challenges & dead ends</h3>
+        <p><em>"We prototyped a modal that displayed settings on login, but it frustrated users because they had to close it to complete their original task."</em></p>
+        <h3 style="margin-top:16px;">Impact on users & business</h3>
+        <p><em>"Sales increased 15%. App reviews skewed positive and customer satisfaction scores increased."</em></p>
+        <h3 style="margin-top:16px;">What you learned</h3>
+        <p><em>"We realized the importance of prototype testing — test new designs before putting in development effort."</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: BEFORE/AFTER EXAMPLE -->
+  <div class="slide bg-white">
+    <div class="phase-num">Phase 05 — Before/After Example</div>
+    <h3>How to present critique revisions</h3>
+    <div class="two-col">
+      <div>
+        <h3>1. State the feedback</h3>
+        <p><em>"The navigation felt buried — users in testing couldn't find the main action within the first 10 seconds."</em></p>
+        <h3 style="margin-top:16px;">2. Show the before</h3>
+        <p>Screenshot of the original design with a brief note about what wasn't working and why.</p>
+      </div>
+      <div>
+        <h3>3. Show the after</h3>
+        <p>Screenshot of the revised design. Don't just show it — explain the specific change you made.</p>
+        <h3 style="margin-top:16px;">4. Explain the improvement</h3>
+        <p><em>"Moving the primary CTA above the fold and increasing its contrast reduced the time to first action from 10+ seconds to under 3."</em></p>
+      </div>
+    </div>
+    <p class="accent" style="margin-top:16px;">This is one of the most valuable sections in a case study. It shows you can receive feedback, evaluate it, and act on it. That's a skill employers care about deeply.</p>
+  </div>
+
+  <!-- SLIDE 13: EXAMPLE QUOTE -->
+  <div class="slide bg-black" data-idx="12" id="slide-13">
+    <div class="subtitle">Example</div>
+    <div class="quote">"I over-focused on visual polish early and should have prioritized user flows first."</div>
+    <div class="quote-attr">— Gloria Lo, Sealadder case study</div>
+    <p class="accent" style="margin-top:32px;">That kind of honesty is what makes someone hirable.</p>
+    <div class="slide-cite">
+      <span>Source: glorialo.design/work/sealadder</span>
+      <span>See also: sofievickers.com/work/lido-case-study &middot; lynettemay.com/work/industrydesign</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: GOOD VS GREAT -->
+  <div class="slide bg-light" data-idx="13">
+    <h3>Good vs. Great</h3>
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-head">Good</div>
+        <ul>
+          <li>Shows personas</li>
+          <li>Includes a sitemap</li>
+          <li>Shows final mockups</li>
+          <li>Mentions critique happened</li>
+          <li>Ends with "I learned a lot"</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head">Great</div>
+        <ul>
+          <li>Explains what personas revealed</li>
+          <li>Explains why it's organized that way</li>
+          <li>Highlights screens that solve the problem</li>
+          <li>Shows before/after with reasoning</li>
+          <li>Ends with a specific insight or mistake</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: GRADING -->
+  <div class="slide bg-white" data-idx="14">
+    <div class="subtitle">Grading</div>
+    <h3>30 Points Total</h3>
+    <div class="grade-table">
+      <div class="grade-row header">
+        <div>Phase</div>
+        <div class="grade-pts">Pts</div>
+        <div>Looking For</div>
+      </div>
+      <div class="grade-row">
+        <div><strong>Defining the Problem</strong></div>
+        <div class="grade-pts">5</div>
+        <div class="grade-desc">Clear project, audience, and stakes within seconds</div>
+      </div>
+      <div class="grade-row">
+        <div><strong>Understanding the Audience</strong></div>
+        <div class="grade-pts">5</div>
+        <div class="grade-desc">Personas, empathy map, journey map connected to decisions</div>
+      </div>
+      <div class="grade-row">
+        <div><strong>Sketches & Wireframes</strong></div>
+        <div class="grade-pts">8</div>
+        <div class="grade-desc">Sitemap, sketches, iteration with reasoning at each step</div>
+      </div>
+      <div class="grade-row">
+        <div><strong>Final Design & Prototypes</strong></div>
+        <div class="grade-pts">7</div>
+        <div class="grade-desc">Prototype links, responsive mockups, features explained</div>
+      </div>
+      <div class="grade-row">
+        <div><strong>Hypothetical Results</strong></div>
+        <div class="grade-pts">5</div>
+        <div class="grade-desc">Before/after, impact tied to research, honest reflection</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: DELIVERABLE -->
+  <div class="slide bg-gray" data-idx="15">
+    <div class="subtitle">Deliverable</div>
+    <h2>One Figma page, top to bottom</h2>
+    <div class="two-col" style="margin-top:20px;">
+      <div>
+        <h3>Format</h3>
+        <ul>
+          <li>Desktop-width frame, scrollable case study</li>
+          <li>All visuals embedded — mockups, wireframes, sitemaps, personas, before/afters</li>
+          <li>Use your portfolio branding if you have one</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Submit</h3>
+        <ul>
+          <li>Figma link with view access enabled</li>
+          <li>Link to your original prototype</li>
+        </ul>
+        <h3 style="margin-top:16px;">Remember</h3>
+        <ul>
+          <li>Don't redesign your original project — document and present what you did</li>
+          <li>Small cleanup is fine, but the project stays the project</li>
+          <li>This should look like a real portfolio page, not a homework submission</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: CLOSING -->
+  <div class="slide bg-black" data-idx="16">
+    <div class="split">
+      <div class="split-text">
+        <h1>Show the thinking, not just the design.</h1>
+        <p class="accent" style="margin-top:24px;">Good case studies show the work. Great case studies explain the thinking.</p>
+      </div>
+      <div class="split-img">
+        <img src="images/slide-casestudy.jpg" alt="Case Study">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PROGRESS -->
+<div class="progress" id="progress"></div>
+<div class="counter" id="counter"></div>
+<div class="deck-label">How to Write a Case Study</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const total = slides.length;
+
+  function show(idx) {
+    if (idx < 0 || idx >= total) return;
+    slides[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+
+    // Update progress
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+
+    // Update progress bar color
+    const bg = slides[current].classList.contains('bg-white') || slides[current].classList.contains('bg-light');
+    document.getElementById('progress').style.background = bg ? '#111' : '#fff';
+    document.getElementById('counter').style.color = bg ? '#111' : '#fff';
+    document.querySelector('.deck-label').style.color = bg ? '#111' : '#fff';
+
+    // Persist slide in URL
+    const url = new URL(window.location);
+    url.searchParams.set('slide', idx + 1);
+    history.replaceState(null, '', url);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      show(current + 1);
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      show(current - 1);
+    }
+  });
+
+  // Click to advance
+  document.addEventListener('click', (e) => {
+    if (e.clientX > window.innerWidth / 2) show(current + 1);
+    else show(current - 1);
+  });
+
+  // Start on slide from ?slide= param, or slide 1
+  const startSlide = parseInt(new URLSearchParams(window.location.search).get('slide')) || 1;
+  show(Math.min(Math.max(startSlide - 1, 0), total - 1));
+</script>
+
+</body>
+</html>
